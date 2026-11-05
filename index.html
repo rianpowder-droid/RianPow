@@ -3,32 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Today</title>
+    <title>RianPow - Portfolio</title>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background: linear-gradient(135deg, #0d1117, #161b22);
+            font-family: 'Courier New', monospace;
+            background: #0d1117;
             color: #c9d1d9;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .pixel-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(63,185,80,0.03) 2px, rgba(63,185,80,0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(63,185,80,0.03) 2px, rgba(63,185,80,0.03) 4px);
+            z-index: 0;
         }
         .container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            border: 4px solid #3fb950;
+            margin-bottom: 40px;
+            background: rgba(63,185,80,0.05);
+        }
+        h1 {
+            font-size: 3em;
+            color: #3fb950;
+            text-shadow: 4px 4px 0 #000;
+            letter-spacing: 4px;
+        }
+        .subtitle { color: #8b949e; margin-top: 10px; font-size: 1.2em; }
+        .badge {
+            display: inline-block;
+            background: #3fb950;
+            color: #0d1117;
+            padding: 5px 15px;
+            margin-top: 15px;
+            font-weight: bold;
+            border: 2px solid #2ea043;
+        }
+        section {
+            margin: 40px 0;
+            padding: 30px;
+            border: 2px solid #30363d;
+            background: rgba(22,27,34,0.8);
+        }
+        h2 {
+            color: #58a6ff;
+            border-bottom: 2px solid #30363d;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .skills {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .skill {
+            background: #21262d;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid #30363d;
+            transition: all 0.3s;
+        }
+        .skill:hover {
+            border-color: #3fb950;
+            transform: translateY(-3px);
+        }
+        .skill span { font-size: 2em; display: block; margin-bottom: 5px; }
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .project {
+            background: #21262d;
+            padding: 20px;
+            border: 2px solid #30363d;
+        }
+        .project h3 { color: #3fb950; margin-bottom: 10px; }
+        .project p { color: #8b949e; font-size: 0.9em; }
+        footer {
             text-align: center;
             padding: 40px;
+            color: #8b949e;
+            border-top: 2px solid #30363d;
+            margin-top: 40px;
         }
-        h1 { color: #3fb950; font-size: 3em; }
-        p { font-size: 1.2em; color: #8b949e; }
-        .green { color: #3fb950; }
+        .green-text { color: #3fb950; }
+        a { color: #58a6ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+        .cursor { animation: blink 1s infinite; }
     </style>
 </head>
 <body>
+    <div class="pixel-bg"></div>
     <div class="container">
-        <h1>🟢 Green Today</h1>
-        <p>GitHub contributions are <span class="green">green</span> today!</p>
-        <p>Made with ❤️ by rianpowder-droid</p>
+        <header>
+            <h1>RIANPOW</h1>
+            <p class="subtitle">Developer & Creator <span class="cursor">_</span></p>
+            <div class="badge">🟢 ONLINE</div>
+        </header>
+
+        <section>
+            <h2>⚡ About Me</h2>
+            <p>Hi! I'm RianPow, a developer who loves building things. This is my portfolio website hosted on GitHub Pages. I enjoy creating software, exploring new technologies, and making cool projects.</p>
+        </section>
+
+        <section>
+            <h2>🛠️ Skills</h2>
+            <div class="skills">
+                <div class="skill"><span>🐍</span>Python</div>
+                <div class="skill"><span>🌐</span>Web Dev</div>
+                <div class="skill"><span>🤖</span>AI/ML</div>
+                <div class="skill"><span>📊</span>Data Analysis</div>
+                <div class="skill"><span>🎵</span>Music</div>
+                <div class="skill"><span>🎮</span>Gaming</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>📁 Projects</h2>
+            <div class="projects">
+                <div class="project">
+                    <h3>🟢 Green Today</h3>
+                    <p>A website to keep GitHub contributions green every day.</p>
+                </div>
+                <div class="project">
+                    <h3>📊 Data Analysis</h3>
+                    <p>Exploring data patterns and insights using Python.</p>
+                </div>
+                <div class="project">
+                    <h3>🎵 Music Bot</h3>
+                    <p>Controlling Spotify playback via terminal commands.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>📡 Contact</h2>
+            <p>GitHub: <a href="https://github.com/rianpowder-droid" class="green-text">@rianpowder-droid</a></p>
+        </section>
+
+        <footer>
+            <p>© 2026 RianPow. Built with ❤️ and GitHub Pages.</p>
+            <p class="green-text">🟢 Contributions are green today!</p>
+        </footer>
     </div>
 </body>
 </html>
+EOF
