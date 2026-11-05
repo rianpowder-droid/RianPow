@@ -1,11 +1,18 @@
-# Green Today
+# RianPow - Interactive Portfolio
 
-A simple website to keep GitHub green.
+A beautiful, interactive portfolio website hosted on GitHub Pages.
 
 ## Visit
-https://rianpowder-droid.github.io/green-today/
+https://rianpowder-droid.github.io/RianPow/
+
+## Features
+- Pixel Catcher Game
+- Click Counter
+- Tab Navigation
+- Animations & Effects
+- Skills & Projects showcase
+- Responsive design
 
 ## About
-This repository was created to maintain daily GitHub contributions.
-# Updated Thu Nov  5 11:48:06 AM WIB 2026
-# RianPow - Thu Nov  5 11:49:18 AM WIB 2026
+Built with love by RianPow (rianpowder-droid)
+EOF
