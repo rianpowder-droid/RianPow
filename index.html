@@ -3,163 +3,326 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RianPow - Portfolio</title>
+    <title>RianPow - Interactive Portfolio</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0d1117;
+            --fg: #c9d1d9;
+            --accent: #3fb950;
+            --accent2: #58a6ff;
+            --border: #30363d;
+            --card: #161b22;
+        }
         body {
             font-family: 'Courier New', monospace;
-            background: #0d1117;
-            color: #c9d1d9;
+            background: var(--bg);
+            color: var(--fg);
             min-height: 100vh;
             overflow-x: hidden;
         }
-        .pixel-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(63,185,80,0.03) 2px, rgba(63,185,80,0.03) 4px),
-                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(63,185,80,0.03) 2px, rgba(63,185,80,0.03) 4px);
+        .grid-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(63,185,80,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(63,185,80,0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
             z-index: 0;
+            animation: gridMove 20s linear infinite;
         }
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
+        @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 20px 20px; } }
+
+        .container { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding: 20px; }
+
         header {
-            text-align: center;
-            padding: 60px 20px;
-            border: 4px solid #3fb950;
-            margin-bottom: 40px;
-            background: rgba(63,185,80,0.05);
+            text-align: center; padding: 60px 20px; margin-bottom: 30px;
+            border: 3px solid var(--accent); background: rgba(63,185,80,0.05);
+            position: relative; overflow: hidden;
         }
-        h1 {
-            font-size: 3em;
-            color: #3fb950;
-            text-shadow: 4px 4px 0 #000;
-            letter-spacing: 4px;
+        header::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(63,185,80,0.1), transparent);
+            animation: shine 3s infinite;
         }
-        .subtitle { color: #8b949e; margin-top: 10px; font-size: 1.2em; }
-        .badge {
-            display: inline-block;
-            background: #3fb950;
-            color: #0d1117;
-            padding: 5px 15px;
-            margin-top: 15px;
-            font-weight: bold;
-            border: 2px solid #2ea043;
+        @keyframes shine { 0% { left: -100%; } 100% { left: 100%; } }
+        h1 { font-size: 4em; color: var(--accent); text-shadow: 4px 4px 0 #000, 0 0 20px rgba(63,185,80,0.5); letter-spacing: 6px; }
+        .subtitle { color: #8b949e; font-size: 1.2em; margin-top: 10px; }
+        .badge { display: inline-block; background: var(--accent); color: #0d1117; padding: 6px 18px; margin-top: 15px; font-weight: bold; border: 2px solid #2ea043; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+        nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+        nav button {
+            background: var(--card); color: var(--fg); border: 2px solid var(--border);
+            padding: 10px 20px; font-family: inherit; font-size: 1em; cursor: pointer;
+            transition: all 0.2s; text-transform: uppercase;
         }
-        section {
-            margin: 40px 0;
-            padding: 30px;
-            border: 2px solid #30363d;
-            background: rgba(22,27,34,0.8);
+        nav button:hover, nav button.active {
+            border-color: var(--accent); color: var(--accent); background: rgba(63,185,80,0.1);
         }
-        h2 {
-            color: #58a6ff;
-            border-bottom: 2px solid #30363d;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+
+        .section { display: none; animation: fadeIn 0.5s; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .card {
+            background: var(--card); border: 2px solid var(--border); padding: 30px;
+            margin: 20px 0; transition: border-color 0.3s;
         }
-        .skills {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+        .card:hover { border-color: var(--accent); }
+        h2 { color: var(--accent2); margin-bottom: 15px; font-size: 1.8em; }
+        h3 { color: var(--accent); margin: 10px 0; }
+
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; }
+        .skill-card {
+            background: var(--card); border: 2px solid var(--border); padding: 20px;
+            text-align: center; cursor: pointer; transition: all 0.3s;
         }
-        .skill {
-            background: #21262d;
-            padding: 15px;
-            text-align: center;
-            border: 2px solid #30363d;
-            transition: all 0.3s;
+        .skill-card:hover { border-color: var(--accent); transform: scale(1.05); box-shadow: 0 0 20px rgba(63,185,80,0.3); }
+        .skill-card .icon { font-size: 2.5em; display: block; margin-bottom: 8px; }
+        .skill-card .name { font-weight: bold; }
+
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .project-card {
+            background: var(--card); border: 2px solid var(--border); padding: 25px;
+            transition: all 0.3s; cursor: pointer;
         }
-        .skill:hover {
-            border-color: #3fb950;
-            transform: translateY(-3px);
+        .project-card:hover { border-color: var(--accent2); transform: translateY(-5px); }
+        .project-card h3 { color: var(--accent2); }
+        .project-card p { color: #8b949e; margin: 10px 0; font-size: 0.95em; }
+        .tag { display: inline-block; background: rgba(88,166,255,0.1); color: var(--accent2); padding: 3px 10px; margin: 3px; font-size: 0.8em; border: 1px solid var(--accent2); }
+
+        .game-area {
+            background: #000; border: 3px solid var(--accent); padding: 20px;
+            text-align: center; margin: 20px 0;
         }
-        .skill span { font-size: 2em; display: block; margin-bottom: 5px; }
-        .projects {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+        #gameCanvas { background: #111; border: 2px solid var(--border); display: block; margin: 0 auto; }
+        .game-controls { margin-top: 15px; }
+        .game-controls button {
+            background: var(--accent); color: #000; border: none; padding: 10px 20px;
+            font-family: inherit; font-weight: bold; cursor: pointer; margin: 5px;
         }
-        .project {
-            background: #21262d;
-            padding: 20px;
-            border: 2px solid #30363d;
+        .game-controls button:hover { background: #2ea043; }
+        .score { color: var(--accent); font-size: 1.5em; margin: 10px 0; }
+
+        .counter { text-align: center; padding: 30px; }
+        .counter button {
+            background: var(--accent); color: #000; border: none; padding: 15px 40px;
+            font-family: inherit; font-size: 1.5em; font-weight: bold; cursor: pointer;
+            margin: 10px;
         }
-        .project h3 { color: #3fb950; margin-bottom: 10px; }
-        .project p { color: #8b949e; font-size: 0.9em; }
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: #8b949e;
-            border-top: 2px solid #30363d;
-            margin-top: 40px;
-        }
-        .green-text { color: #3fb950; }
-        a { color: #58a6ff; text-decoration: none; }
+        .counter button:hover { background: #2ea043; }
+        #counterValue { font-size: 4em; color: var(--accent); text-shadow: 0 0 20px rgba(63,185,80,0.5); }
+
+        footer { text-align: center; padding: 40px; color: #8b949e; border-top: 2px solid var(--border); margin-top: 40px; }
+        .green { color: var(--accent); }
+        a { color: var(--accent2); text-decoration: none; }
         a:hover { text-decoration: underline; }
         @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
         .cursor { animation: blink 1s infinite; }
     </style>
 </head>
 <body>
-    <div class="pixel-bg"></div>
+    <div class="grid-bg"></div>
     <div class="container">
         <header>
             <h1>RIANPOW</h1>
-            <p class="subtitle">Developer & Creator <span class="cursor">_</span></p>
+            <p class="subtitle">Developer & Creator <span id="cursor">_</span></p>
             <div class="badge">🟢 ONLINE</div>
         </header>
 
-        <section>
-            <h2>⚡ About Me</h2>
-            <p>Hi! I'm RianPow, a developer who loves building things. This is my portfolio website hosted on GitHub Pages. I enjoy creating software, exploring new technologies, and making cool projects.</p>
-        </section>
+        <nav>
+            <button class="active" onclick="showSection('about')">About</button>
+            <button onclick="showSection('skills')">Skills</button>
+            <button onclick="showSection('projects')">Projects</button>
+            <button onclick="showSection('game')">🎮 Game</button>
+            <button onclick="showSection('contact')">Contact</button>
+        </nav>
 
-        <section>
-            <h2>🛠️ Skills</h2>
-            <div class="skills">
-                <div class="skill"><span>🐍</span>Python</div>
-                <div class="skill"><span>🌐</span>Web Dev</div>
-                <div class="skill"><span>🤖</span>AI/ML</div>
-                <div class="skill"><span>📊</span>Data Analysis</div>
-                <div class="skill"><span>🎵</span>Music</div>
-                <div class="skill"><span>🎮</span>Gaming</div>
+        <div id="about" class="section active">
+            <div class="card">
+                <h2>⚡ About Me</h2>
+                <p>Hi! I'm RianPow, a developer who loves building things. This is my portfolio website hosted on GitHub Pages. I enjoy creating software, exploring new technologies, and making cool projects.</p>
+                <br>
+                <p>🟢 <span class="green">GitHub contributions are green today!</span></p>
             </div>
-        </section>
+            <div class="card counter">
+                <h2>🖱️ Click Counter</h2>
+                <div id="counterValue">0</div>
+                <button onclick="incrementCounter()">CLICK ME!</button>
+                <button onclick="resetCounter()">Reset</button>
+            </div>
+        </div>
 
-        <section>
-            <h2>📁 Projects</h2>
-            <div class="projects">
-                <div class="project">
-                    <h3>🟢 Green Today</h3>
-                    <p>A website to keep GitHub contributions green every day.</p>
-                </div>
-                <div class="project">
-                    <h3>📊 Data Analysis</h3>
-                    <p>Exploring data patterns and insights using Python.</p>
-                </div>
-                <div class="project">
-                    <h3>🎵 Music Bot</h3>
-                    <p>Controlling Spotify playback via terminal commands.</p>
+        <div id="skills" class="section">
+            <div class="card">
+                <h2>🛠️ Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-card"><span class="icon">🐍</span><span class="name">Python</span></div>
+                    <div class="skill-card"><span class="icon">🌐</span><span class="name">Web Dev</span></div>
+                    <div class="skill-card"><span class="icon">🤖</span><span class="name">AI/ML</span></div>
+                    <div class="skill-card"><span class="icon">📊</span><span class="name">Data Analysis</span></div>
+                    <div class="skill-card"><span class="icon">🎵</span><span class="name">Music</span></div>
+                    <div class="skill-card"><span class="icon">🎮</span><span class="name">Gaming</span></div>
+                    <div class="skill-card"><span class="icon">🔧</span><span class="name">Linux</span></div>
+                    <div class="skill-card"><span class="icon">📱</span><span class="name">Mobile</span></div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section>
-            <h2>📡 Contact</h2>
-            <p>GitHub: <a href="https://github.com/rianpowder-droid" class="green-text">@rianpowder-droid</a></p>
-        </section>
+        <div id="projects" class="section">
+            <div class="card">
+                <h2>📁 Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3>🟢 Green Today</h3>
+                        <p>A website to keep GitHub contributions green every day.</p>
+                        <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">GitHub Pages</span>
+                    </div>
+                    <div class="project-card">
+                        <h3>📊 Data Analysis</h3>
+                        <p>Exploring data patterns and insights using Python and statistics.</p>
+                        <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Matplotlib</span>
+                    </div>
+                    <div class="project-card">
+                        <h3>🎵 Music Controller</h3>
+                        <p>Controlling Spotify playback via terminal and D-Bus commands.</p>
+                        <span class="tag">Bash</span><span class="tag">D-Bus</span><span class="tag">MPRIS</span>
+                    </div>
+                    <div class="project-card">
+                        <h3>🤖 AI Assistant</h3>
+                        <p>Interactive AI-powered assistant for various tasks.</p>
+                        <span class="tag">AI</span><span class="tag">NLP</span><span class="tag">Python</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="game" class="section">
+            <div class="card">
+                <h2>🎮 Pixel Catcher</h2>
+                <p>Catch the green pixels! Use ← → arrow keys or buttons.</p>
+                <div class="game-area">
+                    <canvas id="gameCanvas" width="400" height="300"></canvas>
+                    <div class="score">Score: <span id="score">0</span> | High Score: <span id="highScore">0</span></div>
+                    <div class="game-controls">
+                        <button onclick="startGame()">▶ Start</button>
+                        <button onclick="moveLeft()">◀ Left</button>
+                        <button onclick="moveRight()">▶ Right</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="contact" class="section">
+            <div class="card">
+                <h2>📡 Contact</h2>
+                <p>GitHub: <a href="https://github.com/rianpowder-droid" class="green-text">@rianpowder-droid</a></p>
+                <p style="margin-top: 15px;">Feel free to reach out for collaboration or just to say hi! 👋</p>
+            </div>
+        </div>
 
         <footer>
             <p>© 2026 RianPow. Built with ❤️ and GitHub Pages.</p>
-            <p class="green-text">🟢 Contributions are green today!</p>
+            <p class="green">🟢 Contributions are green today!</p>
         </footer>
     </div>
+
+    <script>
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        let count = 0;
+        function incrementCounter() { count++; document.getElementById('counterValue').textContent = count; }
+        function resetCounter() { count = 0; document.getElementById('counterValue').textContent = 0; }
+
+        setInterval(() => {
+            const c = document.getElementById('cursor');
+            c.style.opacity = c.style.opacity === '0' ? '1' : '0';
+        }, 500);
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let player = { x: 180, y: 270, w: 40, h: 20, speed: 8 };
+        let items = [];
+        let score = 0;
+        let highScore = localStorage.getItem('highScore') || 0;
+        let gameRunning = false;
+        let gameInterval;
+        document.getElementById('highScore').textContent = highScore;
+
+        function startGame() {
+            if (gameRunning) return;
+            gameRunning = true;
+            score = 0;
+            items = [];
+            document.getElementById('score').textContent = 0;
+            gameInterval = setInterval(gameLoop, 30);
+        }
+
+        function gameLoop() {
+            ctx.fillStyle = '#111';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#3fb950';
+            ctx.fillRect(player.x, player.y, player.w, player.h);
+            ctx.fillStyle = '#2ea043';
+            ctx.fillRect(player.x + 5, player.y + 5, player.w - 10, player.h - 10);
+            
+            if (Math.random() < 0.03) {
+                items.push({ x: Math.random() * (canvas.width - 15), y: 0, speed: 2 + Math.random() * 2, type: Math.random() > 0.3 ? 'good' : 'bad' });
+            }
+            
+            for (let i = items.length - 1; i >= 0; i--) {
+                items[i].y += items[i].speed;
+                if (items[i].type === 'good') {
+                    ctx.fillStyle = '#3fb950';
+                } else {
+                    ctx.fillStyle = '#f85149';
+                }
+                ctx.fillRect(items[i].x, items[i].y, 15, 15);
+                
+                if (items[i].y + 15 >= player.y && items[i].y <= player.y + player.h &&
+                    items[i].x + 15 >= player.x && items[i].x <= player.x + player.w) {
+                    if (items[i].type === 'good') {
+                        score += 10;
+                    } else {
+                        score = Math.max(0, score - 5);
+                    }
+                    items.splice(i, 1);
+                    document.getElementById('score').textContent = score;
+                    if (score > highScore) {
+                        highScore = score;
+                        localStorage.setItem('highScore', highScore);
+                        document.getElementById('highScore').textContent = highScore;
+                    }
+                } else if (items[i].y > canvas.height) {
+                    items.splice(i, 1);
+                }
+            }
+            
+            ctx.fillStyle = '#30363d';
+            ctx.fillRect(0, canvas.height - 5, canvas.width, 5);
+        }
+
+        function moveLeft() { player.x = Math.max(0, player.x - player.speed * 3); }
+        function moveRight() { player.x = Math.min(canvas.width - player.w, player.x + player.speed * 3); }
+
+        document.addEventListener('keydown', (e) => {
+            if (!gameRunning) return;
+            if (e.key === 'ArrowLeft') moveLeft();
+            if (e.key === 'ArrowRight') moveRight();
+        });
+
+        ctx.fillStyle = '#111';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#3fb950';
+        ctx.font = '20px Courier New';
+        ctx.textAlign = 'center';
+        ctx.fillText('Press Start to Play!', canvas.width/2, canvas.height/2);
+    </script>
 </body>
 </html>
 EOF
